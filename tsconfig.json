@@ -1,0 +1,29 @@
+{
+    "version": "1.5.0-beta",
+    "typings": "./typings/tsd.d.ts",
+    "compileOnSave": false,
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "rootDir": "./",
+        "outDir": "./dist/",
+        "isolatedModules": false,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "declaration": true,
+        "noImplicitAny": true,
+        "removeComments": false,
+        "noLib": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true
+    },
+    "filesGlob": [
+        "./**/*.ts",
+        "!./typings/**/*",
+        "!./node_modules/**/*"
+    ],
+    "files": [
+        "./dist/src/config.d.ts",
+        "./src/config.ts"
+    ]
+}
