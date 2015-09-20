@@ -40,17 +40,17 @@ export class Config {
   }
 
   defaultConfigOptions: IConfigOptions = {
-    allDir:        'all',
-    envsDir:       'env',
-    specialDir:    'special',
-    localFile:     'local',
-    privateFile:   'private',
+    allDir: 'all',
+    envsDir: 'env',
+    specialDir: 'special',
+    localFile: 'local',
+    privateFile: 'private',
     configDirPath: path.join(process.cwd(), 'config'),
-    envPrefix:     'config.',
-    envSeparator:  '.',
-    argvPrefix:    'config.',
+    envPrefix: 'config.',
+    envSeparator: '.',
+    argvPrefix: 'config.',
     argvSeparator: '.',
-    environment:   process.env.NODE_ENV || 'development',
+    environment: process.env.NODE_ENV || 'development',
     keypathSplitRegExp: /[\[\]\.]/
   };
 
@@ -82,15 +82,17 @@ export class Config {
       return `${escapeSequence}${item}${escapeSequence}`;
     };
 
-    const serialize = (item: string) => {
-      if (_.isRegExp(item) || _.isFunction(item)) {
-        return escape(item);
+    const serialize = (key: string, value: any) => {
+      if (_.isRegExp(value) || _.isFunction(value)) {
+        return escape(value);
       } else {
-        return item;
+        return value;
       }
     };
 
     const serialized = stringify(clone, serialize, 2);
+    const serialized = stringify(clone, null, 2);
+
     const deserialized = serialized.replace(escapeSequenceRegex, '');
 
     return deserialized;
@@ -259,11 +261,11 @@ export class Config {
   }
 
   private $getExternalConfigs(source: any, type: string): any {
-    const out         = {};
-    const options     = this.$options;
-    const prefix      = options[`${type}Prefix`];
-    const separator   = options[`${type}Separator`];
-    const traversed   = traverse(source);
+    const out = {};
+    const options = this.$options;
+    const prefix = options[`${type}Prefix`];
+    const separator = options[`${type}Separator`];
+    const traversed = traverse(source);
     const separatorRe = new RegExp(_.escapeRegExp(separator), 'g');
 
     for (let key in source) {

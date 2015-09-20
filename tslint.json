@@ -41,7 +41,7 @@
       "trace"
     ],
     "no-letruct": true,
-    "no-constructor-vars": true,
+    "no-constructor-vars": false,
     "no-debugger": true,
     "no-duplicate-key": true,
     "no-shadowed-variable": true,

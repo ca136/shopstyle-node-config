@@ -5,7 +5,7 @@ var path = require('path');
 var yargs = require('yargs');
 var requireDirectory = require('require-directory');
 var traverse = require('traverse');
-var stringify = require('json-stringify-save');
+var stringify = require('json-stringify-safe');
 var Config = (function () {
     // TODO: look for ssconfig.rc first for options
     function Config(options) {
@@ -51,15 +51,16 @@ var Config = (function () {
         var escape = function (item) {
             return "" + escapeSequence + item + escapeSequence;
         };
-        var serialize = function (item) {
-            if (_.isRegExp(item) || _.isFunction(item)) {
-                return escape(item);
+        var serialize = function (key, value) {
+            if (_.isRegExp(value) || _.isFunction(value)) {
+                return escape(value);
             }
             else {
-                return item;
+                return value;
             }
         };
         var serialized = stringify(clone, serialize, 2);
+        var serialized = stringify(clone, null, 2);
         var deserialized = serialized.replace(escapeSequenceRegex, '');
         return deserialized;
     };
