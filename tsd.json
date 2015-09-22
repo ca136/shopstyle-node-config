@@ -1,18 +1,75 @@
 {
   "version": "v4",
-  "repo": "borisyankov/DefinitelyTyped",
+  "repo": "PopSugar/DefinitelyTyped",
   "ref": "master",
   "path": "typings",
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "node/node.d.ts": {
-      "commit": "070e3a5e095d2a2f043f999bd9fb36fe9d5f68ab"
+      "commit": "cc0422bd72640ee8ee721ae245174647f28ef311"
+    },
+    "gulp/gulp.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "angular-ui-router/angular-ui-router.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "karma/karma.d.ts": {
+      "commit": "b95d6bea8041db86ccee30ef1ef97e4358432311"
+    },
+    "mocha/mocha.d.ts": {
+      "commit": "b95d6bea8041db86ccee30ef1ef97e4358432311"
+    },
+    "chai/chai.d.ts": {
+      "commit": "b95d6bea8041db86ccee30ef1ef97e4358432311"
+    },
+    "angularjs/angular-animate.d.ts": {
+      "commit": "b95d6bea8041db86ccee30ef1ef97e4358432311"
+    },
+    "angularjs/angular-cookies.d.ts": {
+      "commit": "b95d6bea8041db86ccee30ef1ef97e4358432311"
+    },
+    "oclazyload/oclazyload.d.ts": {
+      "commit": "b95d6bea8041db86ccee30ef1ef97e4358432311"
+    },
+    "express/express.d.ts": {
+      "commit": "304a25197990aeabf8e9fd030ad927ed011b9e83"
     },
     "lodash/lodash.d.ts": {
-      "commit": "070e3a5e095d2a2f043f999bd9fb36fe9d5f68ab"
+      "commit": "4df20c9706ce6ca27137617770b57f3a0d3f9689"
     },
-    "yargs/yargs.d.ts": {
-      "commit": "5109e1269d6ab8e8e73b1a5e85d8ceb836d3099f"
+    "browser-sync/browser-sync.d.ts": {
+      "commit": "4df20c9706ce6ca27137617770b57f3a0d3f9689"
+    },
+    "chokidar/chokidar.d.ts": {
+      "commit": "4df20c9706ce6ca27137617770b57f3a0d3f9689"
+    },
+    "systemjs/systemjs.d.ts": {
+      "commit": "4df20c9706ce6ca27137617770b57f3a0d3f9689"
+    },
+    "mime/mime.d.ts": {
+      "commit": "4df20c9706ce6ca27137617770b57f3a0d3f9689"
+    },
+    "serve-static/serve-static.d.ts": {
+      "commit": "4df20c9706ce6ca27137617770b57f3a0d3f9689"
+    },
+    "ionic/ionic.d.ts": {
+      "commit": "9e1d6b51c5781e89f5778705a36fcf64a3164c6d"
+    },
+    "jquery/jquery.d.ts": {
+      "commit": "9e1d6b51c5781e89f5778705a36fcf64a3164c6d"
+    },
+    "angularjs/angular-mocks.d.ts": {
+      "commit": "de64692b73de1aee9e63a7a6cf937679a42b85ca"
+    },
+    "angular-formly/angular-formly.d.ts": {
+      "commit": "de64692b73de1aee9e63a7a6cf937679a42b85ca"
+    },
+    "moment/moment.d.ts": {
+      "commit": "de64692b73de1aee9e63a7a6cf937679a42b85ca"
+    },
+    "moment/moment-node.d.ts": {
+      "commit": "de64692b73de1aee9e63a7a6cf937679a42b85ca"
     }
   }
 }
