@@ -91,7 +91,7 @@ export class Config {
     };
 
     const serialized = stringify(clone, serialize, 2);
-    const serialized = stringify(clone, null, 2);
+    // const serialized = stringify(clone, null, 2);
 
     const deserialized = serialized.replace(escapeSequenceRegex, '');
 
