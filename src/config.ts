@@ -30,7 +30,7 @@ export class Config {
   private $options: any;
 
   // TODO: look for ssconfig.rc first for options
-  constructor(options: IConfigOptions = {}) {
+  constructor(options?: IConfigOptions) {
     if (!(this instanceof Config)) {
       return new Config(options);
     }
@@ -176,7 +176,7 @@ export class Config {
    * @param  {any}  [context=this] Context that gets merged into
    * @return {any}                 Context supplied (or this) is returned
    */
-  $merge(value: any, context: any = this) {
+  $merge(value: any, context?: any) {
     return <Config>_.merge(context, value, (a: any, b: any) => {
 
       if (_.isArray(a) && _.isArray(b)) {
@@ -201,16 +201,23 @@ export class Config {
     });
   }
 
-  $load(options: IConfigOptions = {}): Config {
+  $load(options?: IConfigOptions): Config {
     this.$options = options;
     _.defaults(this.$options, this.defaultConfigOptions);
 
     const all = options.allDir;
     const configPath = path.resolve(options.configDirPath);
+    let tree: any;
 
-    const tree = this.$directoryTree = requireDirectory(module, configPath, {
-      extensions: ['ts', 'js', 'json']
-    });
+    // TODO: check for config dir existing first
+    try {
+      tree = this.$directoryTree = requireDirectory(module, configPath, {
+        extensions: ['ts', 'js', 'json']
+      });
+    } catch (error) {
+      console.error('Could not read config dir', error.stack);
+      return this;
+    }
 
     // Loop over 'all' configs and merge them alphabetically
     const keys = Object.keys(tree[all]).sort();
@@ -300,5 +307,5 @@ export class Config {
 }
 
 const config = new Config();
-export default config;
 module.exports = config;
+export default config;
