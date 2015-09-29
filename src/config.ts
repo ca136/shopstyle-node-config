@@ -201,7 +201,9 @@ export class Config {
     });
   }
 
-  $load(options?: IConfigOptions): Config {
+  $load(options: IConfigOptions): Config {
+    options = options || {};
+
     this.$options = options;
     _.defaults(this.$options, this.defaultConfigOptions);
 
