@@ -30,10 +30,12 @@ export class Config {
   private $options: any;
 
   // TODO: look for ssconfig.rc first for options
-  constructor(options?: IConfigOptions) {
+  constructor(options: IConfigOptions = {}) {
     if (!(this instanceof Config)) {
       return new Config(options);
     }
+
+    // console.log('CWD', process.cwd());
 
     this.$loadDefaultConfigs();
     this.$load(options);
@@ -176,7 +178,7 @@ export class Config {
    * @param  {any}  [context=this] Context that gets merged into
    * @return {any}                 Context supplied (or this) is returned
    */
-  $merge(value: any, context?: any) {
+  $merge(value: any, context: any = this) {
     return <Config>_.merge(context, value, (a: any, b: any) => {
 
       if (_.isArray(a) && _.isArray(b)) {
@@ -201,9 +203,7 @@ export class Config {
     });
   }
 
-  $load(options: IConfigOptions): Config {
-    options = options || {};
-
+  $load(options: IConfigOptions = {}): Config {
     this.$options = options;
     _.defaults(this.$options, this.defaultConfigOptions);
 
