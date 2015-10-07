@@ -222,6 +222,11 @@ export class Config {
     });
   }
 
+  $clone() {
+    const clone: Config = _.cloneDeep(this);
+    return clone;
+  }
+
   $load(options: IConfigOptions = {}): Config {
     this.$options = options;
     _.defaults(this.$options, this.defaultConfigOptions);
