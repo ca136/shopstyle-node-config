@@ -1,6 +1,6 @@
 {
   "name": "@popsugar/shopstyle-node-config",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "main": "index.js",
   "dependencies": {
     "dts-bundle": "^0.2.0",
