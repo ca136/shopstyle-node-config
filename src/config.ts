@@ -129,7 +129,7 @@ export class Config {
   }
 
   /**
-   * @todo - do without libs so can use on client too
+   * @todo - not workign as expected
    */
   $get(keyPath: string, property: string): any {
     const split = keyPath.split(this.$options.keypathSplitRegExp);
@@ -138,9 +138,10 @@ export class Config {
 
     // This should actually be a string, but typescript for some
     // reason demands it must be a number...?
-    let key: any;
+    let key: string;
 
-    while (key = split.unshift()) {
+    while (key = split.shift()) {
+      console.log('cursor', key, cursor);
       cursor = cursor[key];
       if (!cursor) {
         break;
@@ -153,14 +154,17 @@ export class Config {
     return cursor;
   }
 
+  /**
+   * @todo - not working as expected
+   */
   $set(keyPath: string, value: any): Config {
     const split = keyPath.split(this.$options.keypathSplitRegExp);
     const numberRegExp = /^\d+$/;
 
     let cursor: any = this;
-    let key: any;
+    let key: string;
 
-    while (key = split.unshift()) {
+    while (key = split.shift()) {
       if (!split.length) {
         cursor[key] = value;
       } else {
