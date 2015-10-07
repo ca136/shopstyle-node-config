@@ -9,6 +9,7 @@ const requireDirectory = require('require-directory');
 const traverse = require('traverse');
 const stringify = require('json-stringify-safe');
 
+// TODO: make class with defaults instead
 export interface IConfigOptions {
   allDir?: string;
   envsDir?: string;
@@ -24,18 +25,24 @@ export interface IConfigOptions {
   keypathSplitRegExp?: RegExp;
 }
 
+// Allow {{foo}} interpolations (instead of lodash
+// default <%= foo %>)
+_.templateSettings.interpolate = /\{\{(.+?)\}\}/g;
+
 export class Config {
   private $directoryTree: any;
   private $traversed: any;
   private $options: any;
+  private $env: any;
+  private env: string;
+
+  Config = Config;
 
   // TODO: look for ssconfig.rc first for options
   constructor(options: IConfigOptions = {}) {
     if (!(this instanceof Config)) {
       return new Config(options);
     }
-
-    // console.log('CWD', process.cwd());
 
     this.$loadDefaultConfigs();
     this.$load(options);
@@ -59,15 +66,21 @@ export class Config {
   clientWhitelist: string[] = [
     '$get',
     '$set',
-    '$merge'
+    '$merge',
+    '$options',
+    '$env',
+    '$loadFromHost',
   ];
 
-  toString() {
-    const clone = _.clone(this);
+  // TOOD: option to not stringify for eval with funcitons, regex, etc
+  $stringify() {
+    // _.omit will flatten the object so we can iterate over instance and __proto__
+    // keys
+    const clone = _.omit(this);
 
     // Remove private methods not in whitelist
     for (const key in clone) {
-      if (key[0] === '$' && !_.contains(this.clientWhitelist, key)) {
+      if (key[0] === '$' && !_.contains(this.clientWhitelist, key) || key === 'Config') {
         delete clone[key];
       }
     }
@@ -93,9 +106,11 @@ export class Config {
     };
 
     const serialized = stringify(clone, serialize, 2);
-    // const serialized = stringify(clone, null, 2);
 
-    const deserialized = serialized.replace(escapeSequenceRegex, '');
+    const deserialized: string = serialized
+      .replace(escapeSequenceRegex, '')
+      .replace(/\\\\/g, '\\')
+      .replace(/\\n/g, '\n');
 
     return deserialized;
   }
@@ -133,7 +148,7 @@ export class Config {
     }
 
     if (property && cursor) {
-      cursor = cursor[property] || cursor.default || cursor;
+      cursor = cursor[property] || cursor['default'] || cursor;
     }
     return cursor;
   }
@@ -237,10 +252,38 @@ export class Config {
       }
     }
 
+    this.$env = envDir;
+
     this.$merge(this.$getEnvConfigs());
     this.$merge(this.$getArgvConfigs());
 
     this.$processTemplates();
+
+    return this;
+  }
+
+  // TODO: potential bugs in merging one env then
+  // merging another env later
+  $loadFromHost(host?: string) {
+    if (!host) {
+      try {
+        host = window.location.host;
+      } catch (error) {
+        console.error('Could not load configs from host');
+      }
+    }
+
+    for (const key in this.$env) {
+      const value = this.$env[key];
+
+      if (value && value.hostMatch) {
+        if (host.match(new RegExp(value.hostMatch))) {
+          this.env = key;
+          this.$merge(value);
+          break;
+        }
+      }
+    }
 
     return this;
   }
