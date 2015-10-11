@@ -27,7 +27,8 @@ export interface IConfigOptions {
 
 // Allow {{foo}} interpolations (instead of lodash
 // default <%= foo %>)
-_.templateSettings.interpolate = /\{\{(.+?)\}\}/g;
+// FIXME: this is *global* and messes up other things
+// _.templateSettings.interpolate = /\{\{(.+?)\}\}/g;
 
 export class Config {
   private $directoryTree: any;
