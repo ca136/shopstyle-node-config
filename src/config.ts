@@ -23,6 +23,7 @@ export interface IConfigOptions {
   argvSeparator?: string;
   environment?: string;
   keypathSplitRegExp?: RegExp;
+  htmlhint?: any;
 }
 
 // Allow {{foo}} interpolations (instead of lodash
@@ -61,7 +62,11 @@ export class Config {
     argvPrefix: 'config.',
     argvSeparator: '.',
     environment: process.env.NODE_ENV || 'development',
-    keypathSplitRegExp: /[\[\]\.]/
+    keypathSplitRegExp: /[\[\]\.]/,
+    htmlhint: {
+      'doctype-first': false,
+      'title-require': false
+    }
   };
 
   clientWhitelist: string[] = [
