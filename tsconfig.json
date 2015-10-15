@@ -23,7 +23,9 @@
         "!./node_modules/**/*"
     ],
     "files": [
-        "./dist/src/config.d.ts",
-        "./src/config.ts"
-    ]
+        "dist/config.d.ts",
+        "dist/src/config.d.ts",
+        "src/config.ts"
+    ],
+    "exclude": []
 }

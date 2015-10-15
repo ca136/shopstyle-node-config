@@ -1,9 +1,10 @@
 /// <reference path="../typings/tsd.d.ts" />
 
-import fs = require('fs');
-import _ = require('lodash');
-import path = require('path');
-import yargs = require('yargs');
+import fs         = require('fs');
+import _          = require('lodash');
+import path       = require('path');
+import yargs      = require('yargs');
+import Handlebars = require('handlebars');
 
 const requireDirectory = require('require-directory');
 const traverse = require('traverse');
@@ -78,7 +79,14 @@ export class Config {
     '$loadFromHost',
   ];
 
-  // TOOD: option to not stringify for eval with funcitons, regex, etc
+  toString() {
+    return stringify(this);
+  }
+
+  /**
+   * Stringifies configs while preserving non-JSON types like
+   * regular expressions and functions for loading on the client
+   */
   $stringify() {
     // _.omit will flatten the object so we can iterate over instance and __proto__
     // keys
@@ -104,6 +112,7 @@ export class Config {
     };
 
     const serialize = (key: string, value: any) => {
+      // TODO: only stringify if on root level starting with $?
       if (_.isRegExp(value) || _.isFunction(value)) {
         return escape(value);
       } else {
@@ -313,14 +322,14 @@ export class Config {
   }
 
   private $containsTemplate(item: any) {
-    return typeof item === 'string' && _.contains(item, '<%');
+    return typeof item === 'string' && _.contains(item, '{{');
   }
 
   /**
    * @todo allow lists, regex, etc
    */
   private $processValueTemplate(string: string): any {
-    const result = _.template(string)(this);
+    const result = Handlebars.compile(string)(this);
     if (this.$containsTemplate(result)) {
       return this.$processValueTemplate(result);
     }

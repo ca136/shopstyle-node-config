@@ -70,6 +70,9 @@
     },
     "moment/moment-node.d.ts": {
       "commit": "de64692b73de1aee9e63a7a6cf937679a42b85ca"
+    },
+    "handlebars/handlebars.d.ts": {
+      "commit": "de64692b73de1aee9e63a7a6cf937679a42b85ca"
     }
   }
 }
