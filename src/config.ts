@@ -34,7 +34,6 @@ export interface IConfigOptions {
 
 export class Config {
   private $directoryTree: any;
-  private $traversed: any;
   private $options: any;
   private $env: any;
   private env: string;
@@ -80,7 +79,7 @@ export class Config {
   ];
 
   toString() {
-    return stringify(this);
+    return stringify(this, null, 2);
   }
 
   /**
@@ -156,7 +155,6 @@ export class Config {
     let key: string;
 
     while (key = split.shift()) {
-      console.log('cursor', key, cursor);
       cursor = cursor[key];
       if (!cursor) {
         break;
@@ -281,6 +279,10 @@ export class Config {
     this.$merge(this.$getEnvConfigs());
     this.$merge(this.$getArgvConfigs());
 
+    for (const key in this.$env) {
+      this.$processTemplates(this.$env[key]);
+    }
+
     this.$processTemplates();
 
     return this;
@@ -312,11 +314,11 @@ export class Config {
     return this;
   }
 
-  private $processTemplates() {
+  private $processTemplates(context: any = this) {
     const self = this;
-    this.$traversed = traverse(this).forEach(function(item: any) {
+    traverse(context).forEach(function(item: any) {
       if (self.$containsTemplate(item)) {
-        this.update(self.$processValueTemplate(item));
+        this.update(self.$processValueTemplate(item, context));
       }
     });
   }
@@ -328,10 +330,10 @@ export class Config {
   /**
    * @todo allow lists, regex, etc
    */
-  private $processValueTemplate(string: string): any {
+  private $processValueTemplate(string: string, context: any): any {
     const result = Handlebars.compile(string)(this);
     if (this.$containsTemplate(result)) {
-      return this.$processValueTemplate(result);
+      return this.$processValueTemplate(result, context);
     }
     return result;
   }
