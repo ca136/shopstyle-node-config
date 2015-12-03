@@ -23,9 +23,11 @@
         "!./node_modules/**/*"
     ],
     "files": [
-        "dist/config.d.ts",
-        "dist/src/config.d.ts",
-        "src/config.ts"
+        "./dist/src/config.d.ts",
+        "./src/config.ts"
     ],
-    "exclude": []
+    "exclude": [],
+    "atom": {
+        "rewriteTsconfig": true
+    }
 }
