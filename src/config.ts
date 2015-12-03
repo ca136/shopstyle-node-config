@@ -259,10 +259,12 @@ export class Config {
     }
 
     // Loop over 'all' configs and merge them alphabetically
-    const keys = Object.keys(tree[all]).sort();
-    keys.forEach((key) => {
-      this.$merge(tree[all][key]);
-    });
+    if (typeof tree[all] === 'object') {
+      const keys = Object.keys(tree[all]).sort();
+      keys.forEach((key) => {
+        this.$merge(tree[all][key]);
+      });
+    }
 
     // Merge in env files
     const envDir = tree[options.envsDir];
