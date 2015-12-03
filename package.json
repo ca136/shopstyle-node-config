@@ -10,6 +10,6 @@
     "require-directory": "^2.1.1",
     "steve8708-typescript-register": "^1.1.5",
     "traverse": "^0.6.6",
-    "yargs": "^3.24.0"
+    "yargs": "^3.30.0"
   }
 }

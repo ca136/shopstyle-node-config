@@ -9,6 +9,7 @@ import Handlebars = require('handlebars');
 const requireDirectory = require('require-directory');
 const traverse = require('traverse');
 const stringify = require('json-stringify-safe');
+const pkg = require('../package.json');
 
 // TODO: make class with defaults instead
 export interface IConfigOptions {
@@ -47,6 +48,7 @@ export class Config {
     }
 
     this.$loadDefaultConfigs();
+    this.$loadCommonConfigs(options);
     this.$load(options);
   }
 
@@ -139,6 +141,21 @@ export class Config {
     // Allow overriding options with an .ssrc file
     if (fs.existsSync(rcPath)) {
       _.extend(this.defaultConfigOptions, require(rcPath).config);
+    }
+  }
+
+  /**
+   * Load configs from common. Common modules should be able to define default
+   * config properties that parent projects and override. We need to ensure
+   * that we don't try to do this from the shopstyle-node-common repo.
+   */
+  $loadCommonConfigs(options: IConfigOptions = {}): Config {
+    const cwd = process.cwd();
+    let commonOptions = _.clone(options);
+    if (!_.endsWith(cwd, pkg.name)) {
+      const commonBase = 'node_modules/@popsugar/shopstyle-node-common/config';
+      commonOptions.configDirPath = path.join(cwd, commonBase);
+      this.$load(commonOptions);
     }
   }
 
@@ -242,10 +259,12 @@ export class Config {
 
   $load(options: IConfigOptions = {}): Config {
     this.$options = options;
+
     _.defaults(this.$options, this.defaultConfigOptions);
 
     const all = options.allDir;
     const configPath = path.resolve(options.configDirPath);
+
     let tree: any;
 
     // TODO: check for config dir existing first
@@ -259,7 +278,7 @@ export class Config {
     }
 
     // Loop over 'all' configs and merge them alphabetically
-    if (typeof tree[all] === 'object') {
+    if (all && typeof all === 'object' && typeof tree[all] === 'object') {
       const keys = Object.keys(tree[all]).sort();
       keys.forEach((key) => {
         this.$merge(tree[all][key]);
