@@ -9,7 +9,7 @@ import Handlebars = require('handlebars');
 const requireDirectory = require('require-directory');
 const traverse = require('traverse');
 const stringify = require('json-stringify-safe');
-const pkg = require('../package.json');
+const pkg = require(path.join(process.cwd(), './package.json'));
 
 // TODO: make class with defaults instead
 export interface IConfigOptions {
@@ -152,7 +152,9 @@ export class Config {
   $loadCommonConfigs(options: IConfigOptions = {}): Config {
     const cwd = process.cwd();
     let commonOptions = _.clone(options);
-    if (!_.endsWith(cwd, pkg.name)) {
+
+    const endPath = <string>_.last(pkg.name.split(path.sep));
+    if (!_.endsWith(cwd, endPath)) {
       const commonBase = 'node_modules/@popsugar/shopstyle-node-common/config';
       commonOptions.configDirPath = path.join(cwd, commonBase);
       this.$load(commonOptions);
