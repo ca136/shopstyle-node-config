@@ -9,7 +9,7 @@ import Handlebars = require('handlebars');
 const requireDirectory = require('require-directory');
 const traverse = require('traverse');
 const stringify = require('json-stringify-safe');
-const pkg = require(path.join(process.cwd(), './package.json'));
+const pkg = require('../package.json');
 
 // TODO: make class with defaults instead
 export interface IConfigOptions {
